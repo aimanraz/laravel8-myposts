@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import moment from "moment";
 
 import axios from "axios";
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 class PostPage extends Component {
     constructor(props) {
@@ -10,15 +10,17 @@ class PostPage extends Component {
 
         this.state = {
             post: undefined,
+            csrf: this.props.csrf,
         };
     }
     componentDidMount() {
+        console.log(this.state.csrf);
         this.callAPI();
     }
 
     callAPI() {
         const { id } = this.props.match.params;
-        console.log(id);
+
         let url = `/api/posts`;
 
         console.log(`url`, url);
@@ -38,6 +40,26 @@ class PostPage extends Component {
             })
             .catch((e) => {});
     }
+
+    handleDelete = () => {
+        const { id } = this.props.match.params;
+        const { csrf } = this.state;
+        // Include the CSRF token in the headers when making the DELETE request.
+        axios
+            .delete(`/api/posts/${id}`, {
+                headers: {
+                    "X-CSRF-TOKEN": csrf,
+                },
+            })
+            .then((res) => {
+                // Handle the successful deletion, e.g., redirect to another page.
+                // You may want to add error handling here as well.
+                this.props.history.push("/posts"); // Redirect to the home page or another appropriate location.
+            })
+            .catch((error) => {
+                console.error("Delete request error: ", error);
+            });
+    };
 
     render() {
         const { post } = this.state;
@@ -71,29 +93,18 @@ class PostPage extends Component {
                             <p>{post.content}</p>
                         </div>
                         <div className="card-footer px-5 py-3 d-flex justify-content-end">
-                            <a
-                                href={`/posts/${post.id}/edit`}
+                            <Link
+                                to={`/posts/${post.id}/edit`}
                                 className="btn btn-success rounded-pill me-2"
                             >
                                 Edit
-                            </a>
-                            <form action={`/posts/${post.id}`} method="POST">
-                                {/* You should replace this with the appropriate React way of handling CSRF tokens */}
-                                {/* For example, you can use a library like axios to make the DELETE request */}
-                                {/* Also, you should handle the form submission using React state and methods */}
-                                {/* This form is a simple conversion for demonstration purposes */}
-                                <input
-                                    type="hidden"
-                                    name="_method"
-                                    value="DELETE"
-                                />
-                                <button
-                                    type="submit"
-                                    className="btn btn-danger rounded-pill"
-                                >
-                                    Delete
-                                </button>
-                            </form>
+                            </Link>
+                            <button
+                                onClick={this.handleDelete}
+                                className="btn btn-danger rounded-pill"
+                            >
+                                Delete
+                            </button>
                         </div>
                     </div>
                 </div>

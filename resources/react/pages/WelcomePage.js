@@ -1,13 +1,18 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 
-import { BrowserRouter, Route, Switch, Link, Redirect } from "react-router-dom";
+import {
+    BrowserRouter,
+    HashRouter,
+    Route,
+    Switch,
+    Link,
+} from "react-router-dom";
 
 import Navbar from "../components/Navbar";
 import AllPostPage from "./AllPostPage";
-import CreatePage from "./CreatePage";
-import UpdatePage from "./UpdatePage";
 import PostPage from "./PostPage";
+import CreateUpdatePage from "./CreateUpdatePage";
 
 class WelcomePage extends Component {
     render() {
@@ -20,13 +25,13 @@ class WelcomePage extends Component {
                             <MainPage />
                         </Route>
                         <Route path="/create">
-                            <CreatePage />
+                            <CreateUpdatePage />
                         </Route>
-                        <Route path="/update">
-                            <UpdatePage />
+                        <Route path="/posts/:id/edit">
+                            <CreateUpdatePage />
                         </Route>
                         <Route path="/posts/:id">
-                            <PostPage />
+                            <PostPage csrf={this.props.csrf} />
                         </Route>
                         <Route path="/posts">
                             <AllPostPage />
@@ -63,9 +68,9 @@ const element = document.getElementById("WelcomePage");
 if (element) {
     const props = Object.assign({}, element.dataset);
     ReactDOM.render(
-        <BrowserRouter>
+        <HashRouter>
             <WelcomePage {...props} />
-        </BrowserRouter>,
+        </HashRouter>,
         element
     );
 }
