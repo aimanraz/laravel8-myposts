@@ -66,9 +66,9 @@ class CreateUpdatePage extends Component {
             errors.content = "Content is required";
         }
 
-        if (!isEdit && !file) {
-            errors.file = "Image is required";
-        }
+        // if (!isEdit && !file) {
+        //     errors.file = "Image is required";
+        // }
 
         this.setState({ errors });
         return Object.keys(errors).length === 0;
@@ -78,11 +78,12 @@ class CreateUpdatePage extends Component {
         e.preventDefault();
         if (this.validateForm()) {
             const { title, category, content, file, isEdit } = this.state;
-            const formData = new FormData();
-            formData.append("title", title);
-            formData.append("category", category);
-            formData.append("content", content);
-            formData.append("file", file);
+
+            let params = {
+                title: title,
+                category: category,
+                content: content,
+            };
 
             const { match, history } = this.props;
 
@@ -90,16 +91,12 @@ class CreateUpdatePage extends Component {
                 ? `/api/posts/${match.params.id}`
                 : "/api/posts";
 
-            const httpMethod = isEdit ? "patch" : "post";
-
-            console.log("message", isEdit, formData, title);
-
-            // return;
+            const httpMethod = isEdit ? "put" : "post";
 
             axios({
                 method: httpMethod,
                 url: apiUrl,
-                data: formData,
+                data: params,
             })
                 .then((response) => {
                     console.log(
@@ -112,7 +109,9 @@ class CreateUpdatePage extends Component {
                 })
                 .catch((error) => {
                     if (error.response && error.response.data) {
-                        this.setState({ errors: error.response.data.errors });
+                        this.setState({
+                            errors: error.response.data.errors,
+                        });
                     }
                     console.error("Error creating/updating post:", error);
                 });
@@ -123,19 +122,12 @@ class CreateUpdatePage extends Component {
         const { errors, isEdit } = this.state;
         const buttonText = isEdit ? "Update Post" : "Add Post";
 
-        // Check if 'post' is defined before accessing its properties
-        const title = this.state.title || "";
-        const category = this.state.category || "";
-        const content = this.state.content || "";
-
         return (
             <div className="row my-3">
                 <div className="col-lg-8 mx-auto">
                     <div className="card shadow">
-                        <div className="card-header bg-primary">
-                            <h3 className="text-light fw-bold">
-                                {isEdit ? "Update Post" : "Add New Post"}
-                            </h3>
+                        <div className="card-header text-white bg-primary fw-bold fs-3">
+                            {isEdit ? "Update Post" : "Add New Post"}
                         </div>
                         <div className="card-body p-4">
                             <form
@@ -175,23 +167,6 @@ class CreateUpdatePage extends Component {
                                     {errors.category && (
                                         <div className="invalid-feedback">
                                             {errors.category}
-                                        </div>
-                                    )}
-                                </div>
-
-                                <div className="my-2">
-                                    <input
-                                        type="file"
-                                        name="file"
-                                        accept="image/*"
-                                        onChange={this.handleFileChange}
-                                        className={`form-control ${
-                                            errors.file ? "is-invalid" : ""
-                                        }`}
-                                    />
-                                    {errors.file && (
-                                        <div className="invalid-feedback">
-                                            {errors.file}
                                         </div>
                                     )}
                                 </div>

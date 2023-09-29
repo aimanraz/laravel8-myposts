@@ -84,16 +84,9 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function update(Request $request, Post $post)
+    public function update(Request $request, $id)
     {
-
-                // Validate the incoming request data
-        // $validatedData = $request->validate([
-        //     'title' => 'required|string|max:255',
-        //     'category' => 'required|string|max:255',
-        //     'content' => 'required|string',
-        //     'file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5000', // Adjust file validation rules as needed
-        // ]);
+        $post = Post::find($id);
 
         $validator = Validator::make($request->all(),[
             'title' => 'required|string|max:255',

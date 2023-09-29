@@ -41,13 +41,7 @@ class AllPostPage extends Component {
                         return (
                             <div className="col-lg-4" key={post.id} id={index}>
                                 <div className="card shadow">
-                                    <Link to={`/posts/${post.id}`}>
-                                        <img
-                                            src={`/storage/images/${post.image}`}
-                                            className="img-fluid card-img-top"
-                                            alt={post.title}
-                                        />
-                                    </Link>
+                                    <Link to={`/posts/${post.id}`}></Link>
                                     <div className="card-body">
                                         <p className="btn btn-success rounded-pill btn-sm">
                                             {post.category}

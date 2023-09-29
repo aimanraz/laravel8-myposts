@@ -71,11 +71,11 @@ class PostPage extends Component {
             <div className="row my-4">
                 <div className="col-lg-8 mx-auto">
                     <div className="card shadow">
-                        <img
+                        {/* <img
                             src={`/storage/images/${post.image}`}
                             className="img-fluid card-img-top"
                             alt={post.title}
-                        />
+                        /> */}
                         <div className="card-body p-5">
                             <div className="d-flex justify-content-between align-items-center">
                                 <p className="btn btn-dark rounded-pill">

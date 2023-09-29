@@ -1945,12 +1945,7 @@ var AllPostPage = /*#__PURE__*/function (_Component) {
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
               className: "card shadow",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Link, {
-                to: "/posts/".concat(post.id),
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
-                  src: "/storage/images/".concat(post.image),
-                  className: "img-fluid card-img-top",
-                  alt: post.title
-                })
+                to: "/posts/".concat(post.id)
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
                 className: "card-body",
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
@@ -2069,9 +2064,11 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
       if (!content.trim()) {
         errors.content = "Content is required";
       }
-      if (!isEdit && !file) {
-        errors.file = "Image is required";
-      }
+
+      // if (!isEdit && !file) {
+      //     errors.file = "Image is required";
+      // }
+
       _this.setState({
         errors: errors
       });
@@ -2086,24 +2083,20 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
           content = _this$state2.content,
           file = _this$state2.file,
           isEdit = _this$state2.isEdit;
-        var formData = new FormData();
-        formData.append("title", title);
-        formData.append("category", category);
-        formData.append("content", content);
-        formData.append("file", file);
+        var params = {
+          title: title,
+          category: category,
+          content: content
+        };
         var _this$props = _this.props,
           match = _this$props.match,
           history = _this$props.history;
         var apiUrl = isEdit ? "/api/posts/".concat(match.params.id) : "/api/posts";
-        var httpMethod = isEdit ? "patch" : "post";
-        console.log("message", isEdit, formData, title);
-
-        // return;
-
+        var httpMethod = isEdit ? "put" : "post";
         axios__WEBPACK_IMPORTED_MODULE_1___default()({
           method: httpMethod,
           url: apiUrl,
-          data: formData
+          data: params
         }).then(function (response) {
           console.log("Post created/updated successfully:", response.data);
 
@@ -2144,11 +2137,6 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
         errors = _this$state3.errors,
         isEdit = _this$state3.isEdit;
       var buttonText = isEdit ? "Update Post" : "Add Post";
-
-      // Check if 'post' is defined before accessing its properties
-      var title = this.state.title || "";
-      var category = this.state.category || "";
-      var content = this.state.content || "";
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
         className: "row my-3",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
@@ -2156,11 +2144,8 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
             className: "card shadow",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-              className: "card-header bg-primary",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h3", {
-                className: "text-light fw-bold",
-                children: isEdit ? "Update Post" : "Add New Post"
-              })
+              className: "card-header text-white bg-primary fw-bold fs-3",
+              children: isEdit ? "Update Post" : "Add New Post"
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
               className: "card-body p-4",
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("form", {
@@ -2191,18 +2176,6 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
                   }), errors.category && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
                     className: "invalid-feedback",
                     children: errors.category
-                  })]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-                  className: "my-2",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
-                    type: "file",
-                    name: "file",
-                    accept: "image/*",
-                    onChange: this.handleFileChange,
-                    className: "form-control ".concat(errors.file ? "is-invalid" : "")
-                  }), errors.file && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-                    className: "invalid-feedback",
-                    children: errors.file
                   })]
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
                   className: "my-2",
@@ -2346,11 +2319,7 @@ var PostPage = /*#__PURE__*/function (_Component) {
           className: "col-lg-8 mx-auto",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
             className: "card shadow",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
-              src: "/storage/images/".concat(post.image),
-              className: "img-fluid card-img-top",
-              alt: post.title
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
               className: "card-body p-5",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
                 className: "d-flex justify-content-between align-items-center",
