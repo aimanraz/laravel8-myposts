@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 class AllPostPage extends Component {
     constructor(props) {
@@ -18,13 +17,10 @@ class AllPostPage extends Component {
 
     callAPI() {
         let url = `/api/posts`;
-        console.log(`url`, url);
 
         axios
             .get(url)
             .then((res) => {
-                console.log(url, res.data.posts);
-
                 this.setState({
                     posts: res.data.posts,
                 });
@@ -35,32 +31,40 @@ class AllPostPage extends Component {
     render() {
         const { posts } = this.state;
         return (
-            <div className="row g-4 mt-1">
+            <div className="container mt-4">
+                <h1 className="mb-4">All Posts</h1>
                 {posts !== undefined && posts.length > 0 ? (
-                    posts.map((post, index) => {
-                        return (
-                            <div className="col-lg-4" key={post.id} id={index}>
-                                <div className="card shadow">
-                                    <Link to={`/posts/${post.id}`}></Link>
-                                    <div className="card-body">
-                                        <p className="btn btn-success rounded-pill btn-sm">
-                                            {post.category}
-                                        </p>
-                                        <div className="card-title fw-bold text-primary h4">
-                                            {post.title}
+                    <ul className="list-group">
+                        {posts.map((post, index) => {
+                            return (
+                                <li
+                                    key={post.id}
+                                    className="list-group-item list-group-item-action"
+                                >
+                                    <Link
+                                        to={`/posts/${post.id}`}
+                                        style={{ textDecoration: "none" }}
+                                    >
+                                        <div className="d-flex w-100 justify-content-between">
+                                            <h5 className="mb-1">
+                                                {post.title}
+                                            </h5>
+                                            <span className="badge bg-success rounded-pill">
+                                                {post.category}
+                                            </span>
                                         </div>
-                                        <p className="text-secondary">
+                                        <p className="mb-1 text-secondary">
                                             {post.content}
                                         </p>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-                    })
+                                    </Link>
+                                </li>
+                            );
+                        })}
+                    </ul>
                 ) : (
-                    <h2 className="text-center text-secondary p-4">
-                        No post found in the database!
-                    </h2>
+                    <p className="text-center text-secondary mt-4">
+                        No posts found in the database!
+                    </p>
                 )}
             </div>
         );
