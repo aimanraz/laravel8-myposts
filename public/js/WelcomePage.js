@@ -1880,8 +1880,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
@@ -1895,6 +1897,7 @@ function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) ===
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 
 
 
@@ -1932,40 +1935,57 @@ var AllPostPage = /*#__PURE__*/function (_Component) {
     key: "render",
     value: function render() {
       var posts = this.state.posts;
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
         className: "container mt-4",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h1", {
-          className: "mb-4",
-          children: "All Posts"
-        }), posts !== undefined && posts.length > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("ul", {
-          className: "list-group",
-          children: posts.map(function (post, index) {
-            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("li", {
-              className: "list-group-item list-group-item-action",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
-                to: "/posts/".concat(post.id),
-                style: {
-                  textDecoration: "none"
-                },
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-                  className: "d-flex w-100 justify-content-between",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h5", {
-                    className: "mb-1",
-                    children: post.title
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
-                    className: "badge bg-success rounded-pill",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          className: "d-flex flex-direction-row justify-content-between align-items-center",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h1", {
+            className: "mb-4",
+            children: "Post List"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Link, {
+            className: "btn btn-primary",
+            to: "/create",
+            children: "Add a new one?"
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("hr", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          className: "row g-4 mt-1",
+          children: posts !== undefined && posts.length > 0 ? posts.map(function (post, index) {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+              className: "col-lg-4",
+              id: index,
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                className: "card shadow",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                  className: "card-body",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+                    className: "btn btn-success rounded-pill btn-sm",
                     children: post.category
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Link, {
+                    to: "/posts/".concat(post.id),
+                    style: {
+                      textDecoration: "none"
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                      className: "card-title fw-bold text-primary h4",
+                      children: post.title
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("p", {
+                    className: "text-secondary",
+                    children: ["".concat(post.content.substring(0, 30)).concat(post.content.length > 30 ? "... " : ""), post.content.length > 30 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Link, {
+                      to: "/posts/".concat(post.id),
+                      style: {
+                        textDecoration: "none"
+                      },
+                      children: "Read More"
+                    })]
                   })]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
-                  className: "mb-1 text-secondary",
-                  children: post.content
-                })]
+                })
               })
             }, post.id);
+          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h2", {
+            className: "text-center text-secondary p-4",
+            children: "No post found in the database!"
           })
-        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
-          className: "text-center text-secondary mt-4",
-          children: "No posts found in the database!"
         })]
       });
     }
@@ -1973,6 +1993,41 @@ var AllPostPage = /*#__PURE__*/function (_Component) {
   return AllPostPage;
 }(react__WEBPACK_IMPORTED_MODULE_0__.Component);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AllPostPage);
+
+// function groupList(){
+//     return (<div>
+//                         {posts !== undefined && posts.length > 0 ? (
+//                     <ul className="list-group">
+//                         {posts.map((post, index) => {
+//                             return (
+//                                 <li
+//                                     key={post.id}
+//                                     className="list-group-item list-group-item-action"
+//                                 >
+//                                     <Link
+//                                         to={`/posts/${post.id}`}
+//                                         style={{ textDecoration: "none" }}
+//                                     >
+//                                         <div className="d-flex w-100 justify-content-between align-items-center">
+//                                             <h5 className="mb-1">
+//                                                 {post.title}
+//                                             </h5>
+//                                             <span className="badge bg-success rounded-pill">
+//                                                 {post.category}
+//                                             </span>
+//                                         </div>
+//                                     </Link>
+//                                 </li>
+//                             );
+//                         })}
+//                     </ul>
+//                 ) : (
+//                     <p className="text-center text-secondary mt-4">
+//                         No posts found in the database!
+//                     </p>
+//                 )}
+//     </div>)
+// }
 
 /***/ }),
 
@@ -2049,57 +2104,58 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
         file: e.target.files[0]
       });
     });
-    _defineProperty(_assertThisInitialized(_this), "validateForm", function () {
+    // validateForm = () => {
+    //     const { title, category, content, file, isEdit } = this.state;
+    //     const errors = {};
+    //     if (!title.trim()) {
+    //         errors.title = "Title is required";
+    //     }
+    //     if (!category.trim()) {
+    //         errors.category = "Category is required";
+    //     }
+    //     if (!content.trim()) {
+    //         errors.content = "Content is required";
+    //     }
+    //     // if (!isEdit && !file) {
+    //     //     errors.file = "Image is required";
+    //     // }
+    //     this.setState({ errors });
+    //     return Object.keys(errors).length === 0;
+    // };
+    _defineProperty(_assertThisInitialized(_this), "handleSubmit", function (e) {
+      e.preventDefault();
       var _this$state = _this.state,
         title = _this$state.title,
         category = _this$state.category,
         content = _this$state.content,
         file = _this$state.file,
         isEdit = _this$state.isEdit;
-      var errors = {};
-      if (!title.trim()) {
-        errors.title = "Title is required";
-      }
-      if (!category.trim()) {
-        errors.category = "Category is required";
-      }
-      if (!content.trim()) {
-        errors.content = "Content is required";
-      }
+      var params = {
+        title: title,
+        category: category,
+        content: content
+      };
+      var _this$props = _this.props,
+        match = _this$props.match,
+        history = _this$props.history;
+      var apiUrl = isEdit ? "/api/posts/".concat(match.params.id) : "/api/posts";
+      if (isEdit) {
+        console.log("This is running...");
+        axios__WEBPACK_IMPORTED_MODULE_1___default().patch(apiUrl, params).then(function (response) {
+          console.log("Post created/updated successfully:", response.data);
 
-      // if (!isEdit && !file) {
-      //     errors.file = "Image is required";
-      // }
-
-      _this.setState({
-        errors: errors
-      });
-      return Object.keys(errors).length === 0;
-    });
-    _defineProperty(_assertThisInitialized(_this), "handleSubmit", function (e) {
-      e.preventDefault();
-      if (_this.validateForm()) {
-        var _this$state2 = _this.state,
-          title = _this$state2.title,
-          category = _this$state2.category,
-          content = _this$state2.content,
-          file = _this$state2.file,
-          isEdit = _this$state2.isEdit;
-        var params = {
-          title: title,
-          category: category,
-          content: content
-        };
-        var _this$props = _this.props,
-          match = _this$props.match,
-          history = _this$props.history;
-        var apiUrl = isEdit ? "/api/posts/".concat(match.params.id) : "/api/posts";
-        var httpMethod = isEdit ? "put" : "post";
-        axios__WEBPACK_IMPORTED_MODULE_1___default()({
-          method: httpMethod,
-          url: apiUrl,
-          data: params
-        }).then(function (response) {
+          // After a successful post creation/update, navigate to the /posts page
+          history.push("/posts");
+        })["catch"](function (error) {
+          if (error.response && error.response.data) {
+            _this.setState({
+              errors: error.response.data.errors
+            });
+          }
+          console.error("Error creating/updating post:", error);
+        });
+      } else {
+        axios__WEBPACK_IMPORTED_MODULE_1___default().post(apiUrl, params).then(function (response) {
           console.log("Post created/updated successfully:", response.data);
 
           // After a successful post creation/update, navigate to the /posts page
@@ -2135,9 +2191,9 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this$state3 = this.state,
-        errors = _this$state3.errors,
-        isEdit = _this$state3.isEdit;
+      var _this$state2 = this.state,
+        errors = _this$state2.errors,
+        isEdit = _this$state2.isEdit;
       var buttonText = isEdit ? "Update Post" : "Add Post";
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
         className: "row my-3",
@@ -2292,13 +2348,9 @@ var PostPage = /*#__PURE__*/function (_Component) {
     value: function callAPI() {
       var _this2 = this;
       var id = this.props.match.params.id;
-      var url = "/api/posts";
+      var url = "/api/posts/".concat(id);
       console.log("url", url);
-      axios__WEBPACK_IMPORTED_MODULE_2___default().get(url, {
-        params: {
-          id: id
-        }
-      }).then(function (res) {
+      axios__WEBPACK_IMPORTED_MODULE_2___default().get(url).then(function (res) {
         console.log(url, res.data.post);
         _this2.setState({
           post: res.data.post

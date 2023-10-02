@@ -50,54 +50,69 @@ class CreateUpdatePage extends Component {
         this.setState({ file: e.target.files[0] });
     };
 
-    validateForm = () => {
-        const { title, category, content, file, isEdit } = this.state;
-        const errors = {};
+    // validateForm = () => {
+    //     const { title, category, content, file, isEdit } = this.state;
+    //     const errors = {};
 
-        if (!title.trim()) {
-            errors.title = "Title is required";
-        }
+    //     if (!title.trim()) {
+    //         errors.title = "Title is required";
+    //     }
 
-        if (!category.trim()) {
-            errors.category = "Category is required";
-        }
+    //     if (!category.trim()) {
+    //         errors.category = "Category is required";
+    //     }
 
-        if (!content.trim()) {
-            errors.content = "Content is required";
-        }
+    //     if (!content.trim()) {
+    //         errors.content = "Content is required";
+    //     }
 
-        // if (!isEdit && !file) {
-        //     errors.file = "Image is required";
-        // }
+    //     // if (!isEdit && !file) {
+    //     //     errors.file = "Image is required";
+    //     // }
 
-        this.setState({ errors });
-        return Object.keys(errors).length === 0;
-    };
+    //     this.setState({ errors });
+    //     return Object.keys(errors).length === 0;
+    // };
 
     handleSubmit = (e) => {
         e.preventDefault();
-        if (this.validateForm()) {
-            const { title, category, content, file, isEdit } = this.state;
 
-            let params = {
-                title: title,
-                category: category,
-                content: content,
-            };
+        const { title, category, content, file, isEdit } = this.state;
 
-            const { match, history } = this.props;
+        let params = {
+            title: title,
+            category: category,
+            content: content,
+        };
 
-            const apiUrl = isEdit
-                ? `/api/posts/${match.params.id}`
-                : "/api/posts";
+        const { match, history } = this.props;
 
-            const httpMethod = isEdit ? "put" : "post";
+        const apiUrl = isEdit ? `/api/posts/${match.params.id}` : "/api/posts";
 
-            axios({
-                method: httpMethod,
-                url: apiUrl,
-                data: params,
-            })
+        if (isEdit) {
+            console.log("This is running...");
+            axios
+                .patch(apiUrl, params)
+                .then((response) => {
+                    console.log(
+                        "Post created/updated successfully:",
+                        response.data
+                    );
+
+                    // After a successful post creation/update, navigate to the /posts page
+                    history.push("/posts");
+                })
+                .catch((error) => {
+                    if (error.response && error.response.data) {
+                        this.setState({
+                            errors: error.response.data.errors,
+                        });
+                    }
+                    console.error("Error creating/updating post:", error);
+                });
+        } else {
+            axios
+                .post(apiUrl, params)
                 .then((response) => {
                     console.log(
                         "Post created/updated successfully:",

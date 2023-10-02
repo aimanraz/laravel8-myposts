@@ -16,21 +16,10 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->has('id')) {
-            // If 'id' parameter exists, fetch a single post by ID
-            $postId = $request->input('id');
-            $post = Post::find($postId);
+        // If 'id' parameter is not provided, return all posts
+        $posts = Post::orderBy('id', 'desc')->get();
+        return response()->json(['posts' => $posts]);
 
-            if (!$post) {
-                return response()->json(['error' => 'Post not found'], 404);
-            }
-
-            return response()->json(['post' => $post]);
-        } else {
-            // If 'id' parameter is not provided, return all posts
-            $posts = Post::orderBy('id', 'desc')->get();
-            return response()->json(['posts' => $posts]);
-        }
     }
 
     /**
@@ -42,23 +31,22 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'category' => 'required',
-            'content' => 'required|min:10',
-            'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5000',
+
+        $validator = Validator::make($request->all(),[
+            'title' => 'required|string|max:255',
+            'category' => 'required|string|max:255',
+            'content' => 'required|string',
         ]);
 
-        $imageName = time() . '.' . $request->file->extension();
-        $request->file->storeAs('public/images', $imageName);
+        if ($validator->fails()){
+            return response()->json(['errors'=>$validator->errors()], 422);
+        }
 
         $post = new Post();
 
         $post->title = $request->title;
         $post->category = $request->category;
         $post->content = $request->content;
-        $post->image = $imageName;
-        $post->title = $request->title;
         $post->save();
 
         // Return a JSON response indicating success
@@ -73,7 +61,13 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+            $post = Post::find($id);
+
+            if (!$post) {
+                return response()->json(['error' => 'Post not found'], 404);
+            }
+
+            return response()->json(['post' => $post]);
     }
 
     /**
@@ -92,25 +86,10 @@ class PostController extends Controller
             'title' => 'required|string|max:255',
             'category' => 'required|string|max:255',
             'content' => 'required|string',
-            'file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5000', // Adjust file validation rules as needed
         ]);
 
         if ($validator->fails()){
         return response()->json(['errors'=>$validator->errors()], 422);
-        }
-
-        // Handle file upload if a new file is provided
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $imageName = time() . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('public/images', $imageName);
-
-            // Delete the old image if it exists
-            if ($post->image) {
-                Storage::delete('public/images/' . $post->image);
-            }
-
-            $post->image = $imageName;
         }
 
         // Update the post data
@@ -122,43 +101,6 @@ class PostController extends Controller
         $post->save();
 
         return response()->json(['message' => 'Post updated successfully'], 200);
-
-
-        // try {
-        //     // Validate the incoming request data
-        //     $validatedData = $request->validate([
-        //         'title' => 'required|string|max:255',
-        //         'category' => 'required|string|max:255',
-        //         'content' => 'required|string',
-        //         'file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5000', // Adjust file validation rules as needed
-        //     ]);
-
-        //     // Handle file upload if a new file is provided
-        //     if ($request->hasFile('file')) {
-        //         $file = $request->file('file');
-        //         $imageName = time() . '.' . $file->getClientOriginalExtension();
-        //         $file->storeAs('public/images', $imageName);
-
-        //         // Delete the old image if it exists
-        //         if ($post->image) {
-        //             Storage::delete('public/images/' . $post->image);
-        //         }
-
-        //         $post->image = $imageName;
-        //     }
-
-        //     // Update the post data
-        //     $post->title = $validatedData['title'];
-        //     $post->category = $validatedData['category'];
-        //     $post->content = $validatedData['content'];
-
-        //     // Save the updated post
-        //     $post->save();
-
-        //     return response()->json(['message' => 'Post updated successfully'], 200);
-        // } catch (\Exception $e) {
-        //     return response()->json(['error' => 'Error updating post'], 500);
-        // }
     }
 
     /**

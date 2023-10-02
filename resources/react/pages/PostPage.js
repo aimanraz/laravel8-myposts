@@ -21,16 +21,12 @@ class PostPage extends Component {
     callAPI() {
         const { id } = this.props.match.params;
 
-        let url = `/api/posts`;
+        let url = `/api/posts/${id}`;
 
         console.log(`url`, url);
 
         axios
-            .get(url, {
-                params: {
-                    id: id,
-                },
-            })
+            .get(url)
             .then((res) => {
                 console.log(url, res.data.post);
 

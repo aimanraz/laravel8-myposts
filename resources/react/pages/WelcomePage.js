@@ -1,13 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 
-import {
-    BrowserRouter,
-    HashRouter,
-    Route,
-    Switch,
-    Link,
-} from "react-router-dom";
+import { HashRouter, Route, Switch, Link } from "react-router-dom";
 
 import Navbar from "../components/Navbar";
 import AllPostPage from "./AllPostPage";
