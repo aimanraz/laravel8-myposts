@@ -2075,11 +2075,7 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
     _this = _super.call(this, props);
     _defineProperty(_assertThisInitialized(_this), "fetchPostData", function () {
       var match = _this.props.match;
-      axios__WEBPACK_IMPORTED_MODULE_1___default().get("/api/posts", {
-        params: {
-          id: match.params.id
-        }
-      }).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default().get("/api/posts/".concat(match.params.id)).then(function (response) {
         var _response$data$post = response.data.post,
           title = _response$data$post.title,
           category = _response$data$post.category,
@@ -2104,24 +2100,6 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
         file: e.target.files[0]
       });
     });
-    // validateForm = () => {
-    //     const { title, category, content, file, isEdit } = this.state;
-    //     const errors = {};
-    //     if (!title.trim()) {
-    //         errors.title = "Title is required";
-    //     }
-    //     if (!category.trim()) {
-    //         errors.category = "Category is required";
-    //     }
-    //     if (!content.trim()) {
-    //         errors.content = "Content is required";
-    //     }
-    //     // if (!isEdit && !file) {
-    //     //     errors.file = "Image is required";
-    //     // }
-    //     this.setState({ errors });
-    //     return Object.keys(errors).length === 0;
-    // };
     _defineProperty(_assertThisInitialized(_this), "handleSubmit", function (e) {
       e.preventDefault();
       var _this$state = _this.state,
@@ -2174,7 +2152,7 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
       title: "",
       category: "",
       content: "",
-      file: null,
+      image: "",
       errors: {},
       isEdit: props.match.params.id && props.location.pathname.includes("edit")
     };
@@ -2183,8 +2161,7 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
   _createClass(CreateUpdatePage, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      var isEdit = this.state.isEdit;
-      if (isEdit) {
+      if (this.state.isEdit) {
         this.fetchPostData();
       }
     }

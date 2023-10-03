@@ -9,7 +9,7 @@ class CreateUpdatePage extends Component {
             title: "",
             category: "",
             content: "",
-            file: null,
+            image: "",
             errors: {},
             isEdit:
                 props.match.params.id &&
@@ -18,8 +18,7 @@ class CreateUpdatePage extends Component {
     }
 
     componentDidMount() {
-        const { isEdit } = this.state;
-        if (isEdit) {
+        if (this.state.isEdit) {
             this.fetchPostData();
         }
     }
@@ -27,11 +26,7 @@ class CreateUpdatePage extends Component {
     fetchPostData = () => {
         const { match } = this.props;
         axios
-            .get(`/api/posts`, {
-                params: {
-                    id: match.params.id,
-                },
-            })
+            .get(`/api/posts/${match.params.id}`)
             .then((response) => {
                 const { title, category, content } = response.data.post;
                 this.setState({ title, category, content });
@@ -49,30 +44,6 @@ class CreateUpdatePage extends Component {
     handleFileChange = (e) => {
         this.setState({ file: e.target.files[0] });
     };
-
-    // validateForm = () => {
-    //     const { title, category, content, file, isEdit } = this.state;
-    //     const errors = {};
-
-    //     if (!title.trim()) {
-    //         errors.title = "Title is required";
-    //     }
-
-    //     if (!category.trim()) {
-    //         errors.category = "Category is required";
-    //     }
-
-    //     if (!content.trim()) {
-    //         errors.content = "Content is required";
-    //     }
-
-    //     // if (!isEdit && !file) {
-    //     //     errors.file = "Image is required";
-    //     // }
-
-    //     this.setState({ errors });
-    //     return Object.keys(errors).length === 0;
-    // };
 
     handleSubmit = (e) => {
         e.preventDefault();

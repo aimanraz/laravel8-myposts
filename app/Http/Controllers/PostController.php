@@ -14,7 +14,7 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         // If 'id' parameter is not provided, return all posts
         $posts = Post::orderBy('id', 'desc')->get();
@@ -37,6 +37,13 @@ class PostController extends Controller
             'category' => 'required|string|max:255',
             'content' => 'required|string',
         ]);
+
+        // $validator = Validator::make($request->all(),[
+        //     'title' => 'required|string|max:255',
+        //     'category' => 'required|string|max:255',
+        //     'content' => 'required|string',
+        //     'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5000',
+        // ]);
 
         if ($validator->fails()){
             return response()->json(['errors'=>$validator->errors()], 422);
@@ -86,11 +93,23 @@ class PostController extends Controller
             'title' => 'required|string|max:255',
             'category' => 'required|string|max:255',
             'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5000',
         ]);
 
         if ($validator->fails()){
         return response()->json(['errors'=>$validator->errors()], 422);
         }
+
+        // $imageName = '';
+        // if ($request->hasFile('image')) {
+        //     $imageName = time() . '.' . $request->file->extension();
+        //     $request->file->storeAs('public/images', $imageName);
+        //     if ($post->image) {
+        //         Storage::delete('public/images/' . $post->image);
+        //     }
+        // } else {
+        //     $imageName = $post->image;
+        // }
 
         // Update the post data
         $post->title = $request->title;
