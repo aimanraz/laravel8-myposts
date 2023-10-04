@@ -50,6 +50,10 @@ class AllPostPage extends Component {
                                     id={index}
                                 >
                                     <div className="card shadow">
+                                        <img
+                                            src={`storage/images/${post.image}`}
+                                            className="card-img-top img-fluid"
+                                        />
                                         <div className="card-body">
                                             <p className="btn btn-success rounded-pill btn-sm">
                                                 {post.category}

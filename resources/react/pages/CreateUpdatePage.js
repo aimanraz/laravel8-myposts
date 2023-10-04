@@ -9,7 +9,7 @@ class CreateUpdatePage extends Component {
             title: "",
             category: "",
             content: "",
-            image: "",
+            image: null,
             errors: {},
             isEdit:
                 props.match.params.id &&
@@ -28,8 +28,9 @@ class CreateUpdatePage extends Component {
         axios
             .get(`/api/posts/${match.params.id}`)
             .then((response) => {
-                const { title, category, content } = response.data.post;
-                this.setState({ title, category, content });
+                const { title, category, content, file, image } =
+                    response.data.post;
+                this.setState({ title, category, content, file, image });
             })
             .catch((error) => {
                 console.error("Error fetching post data:", error);
@@ -37,18 +38,30 @@ class CreateUpdatePage extends Component {
     };
 
     handleInputChange = (e) => {
+        // e.persist();
         const { name, value } = e.target;
         this.setState({ [name]: value });
     };
 
     handleFileChange = (e) => {
-        this.setState({ file: e.target.files[0] });
+        this.setState({ image: e.target.files[0] });
     };
 
     handleSubmit = (e) => {
         e.preventDefault();
 
-        const { title, category, content, file, isEdit } = this.state;
+        const { title, category, content, image, isEdit } = this.state;
+
+        const formData = new FormData();
+
+        formData.set("title", title);
+        formData.set("category", category);
+        formData.set("content", content);
+        if (typeof image !== "string") {
+            formData.set("image", image);
+        } else {
+            formData.set("image", "");
+        }
 
         let params = {
             title: title,
@@ -61,9 +74,10 @@ class CreateUpdatePage extends Component {
         const apiUrl = isEdit ? `/api/posts/${match.params.id}` : "/api/posts";
 
         if (isEdit) {
+            formData.append("_method", "PUT");
             console.log("This is running...");
             axios
-                .patch(apiUrl, params)
+                .post(apiUrl, formData)
                 .then((response) => {
                     console.log(
                         "Post created/updated successfully:",
@@ -71,7 +85,7 @@ class CreateUpdatePage extends Component {
                     );
 
                     // After a successful post creation/update, navigate to the /posts page
-                    history.push("/posts");
+                    // history.push("/posts");
                 })
                 .catch((error) => {
                     if (error.response && error.response.data) {
@@ -82,8 +96,9 @@ class CreateUpdatePage extends Component {
                     console.error("Error creating/updating post:", error);
                 });
         } else {
+            console.log("This is running...tooo");
             axios
-                .post(apiUrl, params)
+                .post(apiUrl, formData)
                 .then((response) => {
                     console.log(
                         "Post created/updated successfully:",
@@ -153,6 +168,22 @@ class CreateUpdatePage extends Component {
                                     {errors.category && (
                                         <div className="invalid-feedback">
                                             {errors.category}
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="my-2">
+                                    <input
+                                        type="file"
+                                        name="image"
+                                        onChange={this.handleFileChange}
+                                        className={`form-control ${
+                                            errors.image ? "is-invalid" : ""
+                                        }`}
+                                    />
+                                    {errors.file && (
+                                        <div className="invalid-feedback">
+                                            {errors.image}
                                         </div>
                                     )}
                                 </div>

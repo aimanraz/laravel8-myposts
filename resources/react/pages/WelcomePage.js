@@ -25,7 +25,7 @@ class WelcomePage extends Component {
                             <CreateUpdatePage />
                         </Route>
                         <Route path="/posts/:id">
-                            <PostPage csrf={this.props.csrf} />
+                            <PostPage />
                         </Route>
                         <Route path="/posts">
                             <AllPostPage />

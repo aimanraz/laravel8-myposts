@@ -10,11 +10,9 @@ class PostPage extends Component {
 
         this.state = {
             post: undefined,
-            csrf: this.props.csrf,
         };
     }
     componentDidMount() {
-        console.log(this.state.csrf);
         this.callAPI();
     }
 
@@ -39,14 +37,15 @@ class PostPage extends Component {
 
     handleDelete = () => {
         const { id } = this.props.match.params;
-        const { csrf } = this.state;
-        // Include the CSRF token in the headers when making the DELETE request.
+
+        let result = confirm("Are you want to delete ");
+
+        if (result == false) {
+            return;
+        }
+
         axios
-            .delete(`/api/posts/${id}`, {
-                headers: {
-                    "X-CSRF-TOKEN": csrf,
-                },
-            })
+            .delete(`/api/posts/${id}`)
             .then((res) => {
                 // Handle the successful deletion, e.g., redirect to another page.
                 // You may want to add error handling here as well.
@@ -67,11 +66,11 @@ class PostPage extends Component {
             <div className="row my-4">
                 <div className="col-lg-8 mx-auto">
                     <div className="card shadow">
-                        {/* <img
+                        <img
                             src={`/storage/images/${post.image}`}
                             className="img-fluid card-img-top"
                             alt={post.title}
-                        /> */}
+                        />
                         <div className="card-body p-5">
                             <div className="d-flex justify-content-between align-items-center">
                                 <p className="btn btn-dark rounded-pill">

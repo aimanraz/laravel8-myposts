@@ -31,19 +31,19 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
+        // return response()->json(['data'=>$request->all()], 200);
+        // $validator = Validator::make($request->all(),[
+        //     'title' => 'required|string|max:255',
+        //     'category' => 'required|string|max:255',
+        //     'content' => 'required|string',
+        // ]);
 
         $validator = Validator::make($request->all(),[
             'title' => 'required|string|max:255',
             'category' => 'required|string|max:255',
             'content' => 'required|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5000',
         ]);
-
-        // $validator = Validator::make($request->all(),[
-        //     'title' => 'required|string|max:255',
-        //     'category' => 'required|string|max:255',
-        //     'content' => 'required|string',
-        //     'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5000',
-        // ]);
 
         if ($validator->fails()){
             return response()->json(['errors'=>$validator->errors()], 422);
@@ -54,6 +54,15 @@ class PostController extends Controller
         $post->title = $request->title;
         $post->category = $request->category;
         $post->content = $request->content;
+
+        if ($request->hasFile('image')) {
+
+            $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
+            $request->file('image')->storeAs('public/images', $imageName);
+            $post->image = $imageName;
+
+            }
+
         $post->save();
 
         // Return a JSON response indicating success
@@ -88,28 +97,34 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         $post = Post::find($id);
+        // return response()->json(['data'=>$request->all()], 200);
 
         $validator = Validator::make($request->all(),[
             'title' => 'required|string|max:255',
             'category' => 'required|string|max:255',
             'content' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5000',
+            'image' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5000',
         ]);
 
         if ($validator->fails()){
         return response()->json(['errors'=>$validator->errors()], 422);
         }
 
-        // $imageName = '';
-        // if ($request->hasFile('image')) {
-        //     $imageName = time() . '.' . $request->file->extension();
-        //     $request->file->storeAs('public/images', $imageName);
-        //     if ($post->image) {
-        //         Storage::delete('public/images/' . $post->image);
-        //     }
-        // } else {
-        //     $imageName = $post->image;
-        // }
+        if ($request->hasFile('image')) {
+            // Generate a unique image name
+            $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
+
+            // Store the image in the public/images directory
+            $request->file('image')->storeAs('public/images', $imageName);
+
+            // Delete the old image if it exists
+            if ($post->image) {
+                Storage::delete('public/images/' . $post->image);
+            }
+
+            // Update the post's image field
+            $post->image = $imageName;
+        }
 
         // Update the post data
         $post->title = $request->title;
@@ -121,6 +136,53 @@ class PostController extends Controller
 
         return response()->json(['message' => 'Post updated successfully'], 200);
     }
+
+    // public function update(Request $request, $id)
+    // {
+    //     $post = Post::find($id);
+
+    //     if (!$post) {
+    //         return response()->json(['message' => 'Post not found'], 404);
+    //     }
+
+    //     // $validator = Validator::make($request->all(), [
+    //     //     'title' => 'required|string|max:255',
+    //     //     'category' => 'required|string|max:255',
+    //     //     'content' => 'required|string',
+    //     //     'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5000',
+    //     // ]);
+
+    //     // if ($validator->fails()) {
+    //     //      \Log::error('Validation Errors: ' . json_encode($validator->errors()));
+    //     //     return response()->json(['errors' => $validator->errors()], 422);
+    //     // }
+
+    //     if ($request->hasFile('image')) {
+    //         // Generate a unique image name
+    //         $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
+
+    //         // Store the image in the public/images directory
+    //         $request->file('image')->storeAs('public/images', $imageName);
+
+    //         // Delete the old image if it exists
+    //         if ($post->image) {
+    //             Storage::delete('public/images/' . $post->image);
+    //         }
+
+    //         // Update the post's image field
+    //         $post->image = $imageName;
+    //     }
+
+    //     // Update the post data
+    //     $post->title = $request->input('data.title');
+    //     $post->category = $request->input('data.category');
+    //     $post->content = $request->input('data.content');
+
+    //     // Save the updated post
+    //     $post->save();
+
+    //     return response()->json(['message' => 'Post updated successfully'], 200);
+    // }
 
     /**
      * Remove the specified resource from storage.

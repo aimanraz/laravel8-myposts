@@ -1953,9 +1953,12 @@ var AllPostPage = /*#__PURE__*/function (_Component) {
             return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
               className: "col-lg-4",
               id: index,
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
                 className: "card shadow",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
+                  src: "storage/images/".concat(post.image),
+                  className: "card-img-top img-fluid"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
                   className: "card-body",
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
                     className: "btn btn-success rounded-pill btn-sm",
@@ -1979,7 +1982,7 @@ var AllPostPage = /*#__PURE__*/function (_Component) {
                       children: "Read More"
                     })]
                   })]
-                })
+                })]
               })
             }, post.id);
           }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h2", {
@@ -2079,17 +2082,22 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
         var _response$data$post = response.data.post,
           title = _response$data$post.title,
           category = _response$data$post.category,
-          content = _response$data$post.content;
+          content = _response$data$post.content,
+          file = _response$data$post.file,
+          image = _response$data$post.image;
         _this.setState({
           title: title,
           category: category,
-          content: content
+          content: content,
+          file: file,
+          image: image
         });
       })["catch"](function (error) {
         console.error("Error fetching post data:", error);
       });
     });
     _defineProperty(_assertThisInitialized(_this), "handleInputChange", function (e) {
+      // e.persist();
       var _e$target = e.target,
         name = _e$target.name,
         value = _e$target.value;
@@ -2097,7 +2105,7 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
     });
     _defineProperty(_assertThisInitialized(_this), "handleFileChange", function (e) {
       _this.setState({
-        file: e.target.files[0]
+        image: e.target.files[0]
       });
     });
     _defineProperty(_assertThisInitialized(_this), "handleSubmit", function (e) {
@@ -2106,8 +2114,17 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
         title = _this$state.title,
         category = _this$state.category,
         content = _this$state.content,
-        file = _this$state.file,
+        image = _this$state.image,
         isEdit = _this$state.isEdit;
+      var formData = new FormData();
+      formData.set("title", title);
+      formData.set("category", category);
+      formData.set("content", content);
+      if (typeof image !== "string") {
+        formData.set("image", image);
+      } else {
+        formData.set("image", "");
+      }
       var params = {
         title: title,
         category: category,
@@ -2118,12 +2135,13 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
         history = _this$props.history;
       var apiUrl = isEdit ? "/api/posts/".concat(match.params.id) : "/api/posts";
       if (isEdit) {
+        formData.append("_method", "PUT");
         console.log("This is running...");
-        axios__WEBPACK_IMPORTED_MODULE_1___default().patch(apiUrl, params).then(function (response) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default().post(apiUrl, formData).then(function (response) {
           console.log("Post created/updated successfully:", response.data);
 
           // After a successful post creation/update, navigate to the /posts page
-          history.push("/posts");
+          // history.push("/posts");
         })["catch"](function (error) {
           if (error.response && error.response.data) {
             _this.setState({
@@ -2133,7 +2151,8 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
           console.error("Error creating/updating post:", error);
         });
       } else {
-        axios__WEBPACK_IMPORTED_MODULE_1___default().post(apiUrl, params).then(function (response) {
+        console.log("This is running...tooo");
+        axios__WEBPACK_IMPORTED_MODULE_1___default().post(apiUrl, formData).then(function (response) {
           console.log("Post created/updated successfully:", response.data);
 
           // After a successful post creation/update, navigate to the /posts page
@@ -2152,7 +2171,7 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
       title: "",
       category: "",
       content: "",
-      image: "",
+      image: null,
       errors: {},
       isEdit: props.match.params.id && props.location.pathname.includes("edit")
     };
@@ -2211,6 +2230,17 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
                   }), errors.category && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
                     className: "invalid-feedback",
                     children: errors.category
+                  })]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                  className: "my-2",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+                    type: "file",
+                    name: "image",
+                    onChange: this.handleFileChange,
+                    className: "form-control ".concat(errors.image ? "is-invalid" : "")
+                  }), errors.file && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                    className: "invalid-feedback",
+                    children: errors.image
                   })]
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
                   className: "my-2",
@@ -2294,13 +2324,11 @@ var PostPage = /*#__PURE__*/function (_Component) {
     _this = _super.call(this, props);
     _defineProperty(_assertThisInitialized(_this), "handleDelete", function () {
       var id = _this.props.match.params.id;
-      var csrf = _this.state.csrf;
-      // Include the CSRF token in the headers when making the DELETE request.
-      axios__WEBPACK_IMPORTED_MODULE_2___default()["delete"]("/api/posts/".concat(id), {
-        headers: {
-          "X-CSRF-TOKEN": csrf
-        }
-      }).then(function (res) {
+      var result = confirm("Are you want to delete ");
+      if (result == false) {
+        return;
+      }
+      axios__WEBPACK_IMPORTED_MODULE_2___default()["delete"]("/api/posts/".concat(id)).then(function (res) {
         // Handle the successful deletion, e.g., redirect to another page.
         // You may want to add error handling here as well.
         _this.props.history.push("/posts"); // Redirect to the home page or another appropriate location.
@@ -2309,15 +2337,13 @@ var PostPage = /*#__PURE__*/function (_Component) {
       });
     });
     _this.state = {
-      post: undefined,
-      csrf: _this.props.csrf
+      post: undefined
     };
     return _this;
   }
   _createClass(PostPage, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      console.log(this.state.csrf);
       this.callAPI();
     }
   }, {
@@ -2350,7 +2376,11 @@ var PostPage = /*#__PURE__*/function (_Component) {
           className: "col-lg-8 mx-auto",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
             className: "card shadow",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
+              src: "/storage/images/".concat(post.image),
+              className: "img-fluid card-img-top",
+              alt: post.title
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
               className: "card-body p-5",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
                 className: "d-flex justify-content-between align-items-center",
@@ -59573,9 +59603,7 @@ var WelcomePage = /*#__PURE__*/function (_Component) {
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_CreateUpdatePage__WEBPACK_IMPORTED_MODULE_5__["default"], {})
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Route, {
               path: "/posts/:id",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_PostPage__WEBPACK_IMPORTED_MODULE_4__["default"], {
-                csrf: this.props.csrf
-              })
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_PostPage__WEBPACK_IMPORTED_MODULE_4__["default"], {})
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Route, {
               path: "/posts",
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_AllPostPage__WEBPACK_IMPORTED_MODULE_3__["default"], {})
