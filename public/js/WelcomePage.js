@@ -2263,6 +2263,10 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
                     name: "image",
                     onChange: this.handleFileChange,
                     className: "form-control ".concat(errors.image ? "is-invalid" : "")
+                  }), isEdit && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
+                    src: "/storage/images/".concat(this.state.image),
+                    className: "img-fluid img-thumbnail",
+                    width: 150
                   }), errors.file && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
                     className: "invalid-feedback",
                     children: errors.image

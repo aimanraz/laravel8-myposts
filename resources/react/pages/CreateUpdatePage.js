@@ -182,6 +182,13 @@ class CreateUpdatePage extends Component {
                                             errors.image ? "is-invalid" : ""
                                         }`}
                                     />
+                                    {isEdit && (
+                                        <img
+                                            src={`/storage/images/${this.state.image}`}
+                                            className="img-fluid img-thumbnail"
+                                            width={150}
+                                        />
+                                    )}
                                     {errors.file && (
                                         <div className="invalid-feedback">
                                             {errors.image}
