@@ -9,7 +9,7 @@ class CreateUpdatePage extends Component {
             title: "",
             category: "",
             content: "",
-            image: null,
+            image: "",
             errors: {},
             isEdit:
                 props.match.params.id &&
@@ -57,6 +57,7 @@ class CreateUpdatePage extends Component {
         formData.set("title", title);
         formData.set("category", category);
         formData.set("content", content);
+
         if (typeof image !== "string") {
             formData.set("image", image);
         } else {

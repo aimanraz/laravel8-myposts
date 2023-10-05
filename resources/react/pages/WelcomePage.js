@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { HashRouter, Route, Switch, Link } from "react-router-dom";
 
 import Navbar from "../components/Navbar";
-import AllPostPage from "./AllPostPage";
+import AllPostPage2 from "./AllPostPage2";
 import PostPage from "./PostPage";
 import CreateUpdatePage from "./CreateUpdatePage";
 
@@ -28,7 +28,7 @@ class WelcomePage extends Component {
                             <PostPage />
                         </Route>
                         <Route path="/posts">
-                            <AllPostPage />
+                            <AllPostPage2 />
                         </Route>
                     </Switch>
                 </div>
