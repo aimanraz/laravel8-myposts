@@ -9,6 +9,7 @@ class CreateUpdatePage extends Component {
             title: "",
             category: "",
             content: "",
+            savedImage: "",
             image: "",
             errors: {},
             isEdit:
@@ -28,9 +29,13 @@ class CreateUpdatePage extends Component {
         axios
             .get(`/api/posts/${match.params.id}`)
             .then((response) => {
-                const { title, category, content, file, image } =
-                    response.data.post;
-                this.setState({ title, category, content, file, image });
+                const { title, category, content, image } = response.data.post;
+                this.setState({
+                    title: title,
+                    category: category,
+                    content: content,
+                    savedImage: image,
+                });
             })
             .catch((error) => {
                 console.error("Error fetching post data:", error);
@@ -75,8 +80,8 @@ class CreateUpdatePage extends Component {
         const apiUrl = isEdit ? `/api/posts/${match.params.id}` : "/api/posts";
 
         if (isEdit) {
-            formData.append("_method", "PUT");
-            console.log("This is running...");
+            formData.set("_method", "PUT");
+
             axios
                 .post(apiUrl, formData)
                 .then((response) => {
@@ -86,7 +91,7 @@ class CreateUpdatePage extends Component {
                     );
 
                     // After a successful post creation/update, navigate to the /posts page
-                    // history.push("/posts");
+                    history.push("/posts");
                 })
                 .catch((error) => {
                     if (error.response && error.response.data) {
@@ -97,7 +102,6 @@ class CreateUpdatePage extends Component {
                     console.error("Error creating/updating post:", error);
                 });
         } else {
-            console.log("This is running...tooo");
             axios
                 .post(apiUrl, formData)
                 .then((response) => {
@@ -184,7 +188,7 @@ class CreateUpdatePage extends Component {
                                     />
                                     {isEdit && (
                                         <img
-                                            src={`/storage/images/${this.state.image}`}
+                                            src={`storage/images/${this.state.savedImage}`}
                                             className="img-fluid img-thumbnail"
                                             width={150}
                                         />

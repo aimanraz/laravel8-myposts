@@ -1987,7 +1987,7 @@ var AllPostPage = /*#__PURE__*/function (_Component) {
               id: index,
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
                 className: "card shadow",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
+                children: [post.image != undefined && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
                   src: "storage/images/".concat(post.image),
                   className: "card-img-top img-fluid"
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
@@ -2108,14 +2108,12 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
           title = _response$data$post.title,
           category = _response$data$post.category,
           content = _response$data$post.content,
-          file = _response$data$post.file,
           image = _response$data$post.image;
         _this.setState({
           title: title,
           category: category,
           content: content,
-          file: file,
-          image: image
+          savedImage: image
         });
       })["catch"](function (error) {
         console.error("Error fetching post data:", error);
@@ -2160,13 +2158,12 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
         history = _this$props.history;
       var apiUrl = isEdit ? "/api/posts/".concat(match.params.id) : "/api/posts";
       if (isEdit) {
-        formData.append("_method", "PUT");
-        console.log("This is running...");
+        formData.set("_method", "PUT");
         axios__WEBPACK_IMPORTED_MODULE_1___default().post(apiUrl, formData).then(function (response) {
           console.log("Post created/updated successfully:", response.data);
 
           // After a successful post creation/update, navigate to the /posts page
-          // history.push("/posts");
+          history.push("/posts");
         })["catch"](function (error) {
           if (error.response && error.response.data) {
             _this.setState({
@@ -2176,7 +2173,6 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
           console.error("Error creating/updating post:", error);
         });
       } else {
-        console.log("This is running...tooo");
         axios__WEBPACK_IMPORTED_MODULE_1___default().post(apiUrl, formData).then(function (response) {
           console.log("Post created/updated successfully:", response.data);
 
@@ -2196,6 +2192,7 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
       title: "",
       category: "",
       content: "",
+      savedImage: "",
       image: "",
       errors: {},
       isEdit: props.match.params.id && props.location.pathname.includes("edit")
@@ -2264,7 +2261,7 @@ var CreateUpdatePage = /*#__PURE__*/function (_Component) {
                     onChange: this.handleFileChange,
                     className: "form-control ".concat(errors.image ? "is-invalid" : "")
                   }), isEdit && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
-                    src: "/storage/images/".concat(this.state.image),
+                    src: "storage/images/".concat(this.state.savedImage),
                     className: "img-fluid img-thumbnail",
                     width: 150
                   }), errors.file && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
@@ -2405,10 +2402,9 @@ var PostPage = /*#__PURE__*/function (_Component) {
           className: "col-lg-8 mx-auto",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
             className: "card shadow",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
-              src: "/storage/images/".concat(post.image),
-              className: "img-fluid card-img-top",
-              alt: post.title
+            children: [post.image != undefined && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
+              src: "storage/images/".concat(post.image),
+              className: "card-img-top img-fluid"
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
               className: "card-body p-5",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
